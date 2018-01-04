@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[js字符串match正则匹配捕获特定字符串]]></title>
+    <url>%2F2018%2F01%2F04%2Fjs%E5%AD%97%E7%AC%A6%E4%B8%B2match%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E6%8D%95%E8%8E%B7%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%2F</url>
+    <content type="text"><![CDATA[实例捕获字符串http://locahost:1111/index.html 中的域名和端口1location.href.match(/(https?:)(\/\/.*:\d*)/)[2]+]]></content>
+      <categories>
+        <category>编程</category>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>javascript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[grep 巧妙用法]]></title>
+    <url>%2F2018%2F01%2F03%2Fgrep-%E5%B7%A7%E5%A6%99%E7%94%A8%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[grep查看配置文件有效信息排除#号显示行号123456#排除#号,注意是egrepegrep -nv '^$|#' filename#设置别名，自定义名为cgrepalias cgrep="egrep -nv '^$|#' "#排除#号cgrep filename]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[docker gitlab邮件服务器配置]]></title>
+    <url>%2F2018%2F01%2F03%2Fdocker-gitlab%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[概览 /etc/gitlab/gitlab.rb配置 gitlab_rails[‘smtp_enable’] = truegitlab_rails[‘smtp_address’] = “smtp.qq.com”gitlab_rails[‘smtp_port’] = 25gitlab_rails[‘smtp_user_name’] = “username”gitlab_rails[‘smtp_password’] = “password”gitlab_rails[‘smtp_domain’] = “qq.com”gitlab_rails[‘smtp_authentication’] = :logingitlab_rails[‘smtp_enable_starttls_auto’] = true 刷新配置 gitlab-ctl reconfigure 监听25端口 sudo tcpdump -XX ‘port 25’ 为了方便查看问题，最好用tcpdump抓一下包]]></content>
+      <categories>
+        <category>服务器</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>gitlab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[面向2018，回顾2017]]></title>
+    <url>%2F2018%2F01%2F02%2F%E9%9D%A2%E5%90%912018%EF%BC%8C%E5%9B%9E%E9%A1%BE2017%2F</url>
+    <content type="text"><![CDATA[回顾一年，有收获也有遗憾。23岁 收获离职-确定方向,一路向前 现在的我，对17年2月的离职感到庆幸，这是一个相当正确的决定。在上家创业公司待了2年，由android开发、到硬件开发，再到网站开发。当时我的对各个方向技术充满好奇，软硬件，移动服务端都想接触，这就导致了，广而不深的尴尬局面，其中的利弊就不在这里讨论，现在阶段的我需要做的就是深入我所确定发展的方向！ 创业硬件-扬长避短 3个月时间，三千元投入，两个人。这就是当时的配置。做出了基于crazyflie的四轴飞行器，最后对市场的定位，盈利方式等无法准确分析，生活也有压力，最终放弃了。创业的目的为了自由、为了不再是死工资。创业比平时工作还累，但心是自由的，这种感觉很好！对于这次经历我也明白了一个道理，天才，必须扬长避短。如果让一个文学方面的天才，来做IT行业，那么他很可能很平庸，天才如此，正常的人应该也是。在创业中，我分析了我个人的能力以及特长，对于管理，人际交流方面我确实很差，并且没什么悟性，但技术方面就不同了，这很适合现在的我。我如果向管理方面发展必定事半功倍，发展技术方面至少会比管理方面效率要高，所以我决定优先发展自身的长处。事物具备两面性，虽说要扬长避短，但什么是长?什么是短?这很难说清楚。 后端工程师-从头开始 工作了两三年，心里真是憋屈，居然要重头开始，所以确定方向是多么重要，并且持之以恒。在上个公司打乱了我发展的节奏，让我做安卓，做硬件，做网站，当时年轻没考虑那么多，就啥都答应了。无论在哪个行业应该要有职业原则，哪些自己可以做，哪些不做自己要考虑清楚。 常回家看看 工作是为了什么？为什么而活？你可能很勤奋，很珍惜时间，可能是工作狂，可能想挣很多钱。但请珍惜你的亲人。 遗憾博客 没能坚持写博客是去年的遗憾 起航 至少写100篇博客 18年弟弟高考,加油!]]></content>
+      <categories>
+        <category>日记本</category>
+        <category>年</category>
+      </categories>
+  </entry>
+</search>
