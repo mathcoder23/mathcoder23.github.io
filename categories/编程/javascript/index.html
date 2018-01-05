@@ -393,7 +393,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -404,7 +404,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -610,9 +610,10 @@
 
 
 
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-  
+  <script src="https://cdn1.lncld.net/static/js/3.4.2/av-min.js"></script>
+
+  <script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
   <script type="text/javascript">
     var GUEST = ['nick','mail','link'];
     var guest = 'nick,mail,link';
@@ -620,12 +621,13 @@
       return GUEST.indexOf(item)>-1;
     });
     new Valine({
+        av: AV,
         el: '#comments' ,
         verify: false,
         notify: false,
-        appId: 'WpidnrA34djQwIgK1pdyOk0R',
+        appId: 'WpidnrA34djQwIgK1pdyOk0R-gzGzoHsz',
         appKey: 'qlWiNrajk8dzzvAEvdRbz43g',
-        placeholder: 'Just go go',
+        placeholder: '吐槽',
         avatar:'mm',
         guest_info:guest,
         pageSize:'10' || 10,

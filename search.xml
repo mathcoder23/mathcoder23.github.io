@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[npm参数详解]]></title>
+    <url>%2F2018%2F01%2F04%2Fnpm%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[npm淘宝镜像 npm i –registry=https://registry.npm.taobao.org不建议用cnpm npm install(i) packagename -S (–save)-S(–save)保存到当前npm项目中install 可以简写为i]]></content>
+      <categories>
+        <category>编程</category>
+        <category>nodejs</category>
+      </categories>
+      <tags>
+        <tag>nodejs</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[js字符串match正则匹配捕获特定字符串]]></title>
     <url>%2F2018%2F01%2F04%2Fjs%E5%AD%97%E7%AC%A6%E4%B8%B2match%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E6%8D%95%E8%8E%B7%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%2F</url>
     <content type="text"><![CDATA[实例捕获字符串http://locahost:1111/index.html 中的域名和端口1location.href.match(/(https?:)(\/\/.*:\d*)/)[2]+]]></content>
