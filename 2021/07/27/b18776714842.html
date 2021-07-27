@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>mybatis sqlite jdbc多表更新、删除的bug以及修复方法 | mt23のBlog</title><meta name="keywords" content="java,mybatis,sqlite"><meta name="author" content="mt23"><meta name="copyright" content="mt23"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="故事在使用xerial&#x2F;sqlite-jdbc 版本是3.28.0时发现了这样的问题，由于mysql有update、delete的批量操作支持。但是sqlite3从语法上是不支持的。我们应该如何sqlite3的条件下使用多表批量操作，基本上能想到的方法就是执行一个xml方法中一次执行多条语句了。但是很不幸的告诉你，我们会遇到下面的问题。 xml多sql12345678&lt;update id&#x3D;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis sqlite jdbc多表更新、删除的bug以及修复方法">
+<meta property="og:url" content="https://blog.pettyfox.top/2021/07/27/b18776714842.html">
+<meta property="og:site_name" content="mt23のBlog">
+<meta property="og:description" content="故事在使用xerial&#x2F;sqlite-jdbc 版本是3.28.0时发现了这样的问题，由于mysql有update、delete的批量操作支持。但是sqlite3从语法上是不支持的。我们应该如何sqlite3的条件下使用多表批量操作，基本上能想到的方法就是执行一个xml方法中一次执行多条语句了。但是很不幸的告诉你，我们会遇到下面的问题。 xml多sql12345678&lt;update id&#x3D;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.pettyfox.top/images/img.jpg">
+<meta property="article:published_time" content="2021-07-27T01:27:07.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:51:59.894Z">
+<meta property="article:author" content="mt23">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="mybatis">
+<meta property="article:tag" content="sqlite">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.pettyfox.top/images/img.jpg"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://blog.pettyfox.top/2021/07/27/b18776714842"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'mybatis sqlite jdbc多表更新、删除的bug以及修复方法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-27 09:51:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/head/mt-6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mt23のBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">mybatis sqlite jdbc多表更新、删除的bug以及修复方法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-27T01:27:07.000Z" title="发表于 2021-07-27 09:27:07">2021-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-27T01:51:59.894Z" title="更新于 2021-07-27 09:51:59">2021-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/java/">java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="mybatis sqlite jdbc多表更新、删除的bug以及修复方法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="故事"><a href="#故事" class="headerlink" title="故事"></a>故事</h1><p>在使用<code>xerial/sqlite-jdbc</code> 版本是3.28.0时发现了这样的问题，由于mysql有update、delete的批量操作支持。但是sqlite3从语法上是不支持的。我们应该如何sqlite3的条件下使用多表批量操作，基本上能想到的方法就是执行一个xml方法中一次执行多条语句了。但是很不幸的告诉你，我们会遇到下面的问题。</p>
+<h2 id="xml多sql"><a href="#xml多sql" class="headerlink" title="xml多sql"></a>xml多sql</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>update id<span class="operator">=</span>&quot;update&quot;<span class="operator">&gt;</span></span><br><span class="line">        update <span class="keyword">user</span></span><br><span class="line">        <span class="keyword">set</span> a <span class="operator">=</span> #&#123;a&#125;</span><br><span class="line">        <span class="keyword">where</span> id <span class="operator">=</span> #&#123;id&#125;;</span><br><span class="line">        update user2</span><br><span class="line">        <span class="keyword">set</span> a <span class="operator">=</span> #&#123;a&#125;</span><br><span class="line">        <span class="keyword">where</span> id <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span>update<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里同时更新两张表，分号分割。但分后好的<code>#&#123;a&#125;</code>无法传入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Caused by: org.apache.ibatis.type.TypeException: Error setting non <span class="keyword">null</span> <span class="keyword">for</span> parameter #<span class="number">3</span> with JdbcType <span class="keyword">null</span> . Try setting a different JdbcType <span class="keyword">for</span> <span class="keyword">this</span> parameter or a different configuration property. Cause: java.lang.ArrayIndexOutOfBoundsException: <span class="number">2</span></span><br><span class="line">	at org.apache.ibatis.type.BaseTypeHandler.setParameter(BaseTypeHandler.java:<span class="number">71</span>)</span><br><span class="line">	at org.apache.ibatis.type.UnknownTypeHandler.setNonNullParameter(UnknownTypeHandler.java:<span class="number">45</span>)</span><br><span class="line">	at org.apache.ibatis.type.BaseTypeHandler.setParameter(BaseTypeHandler.java:<span class="number">69</span>)</span><br><span class="line">	... <span class="number">82</span> more</span><br><span class="line">Caused by: java.lang.ArrayIndexOutOfBoundsException: <span class="number">2</span></span><br><span class="line">	at org.sqlite.core.CorePreparedStatement.batch(CorePreparedStatement.java:<span class="number">130</span>)</span><br><span class="line">	at org.sqlite.jdbc3.JDBC3PreparedStatement.setInt(JDBC3PreparedStatement.java:<span class="number">329</span>)</span><br><span class="line">	at org.apache.ibatis.type.IntegerTypeHandler.setNonNullParameter(IntegerTypeHandler.java:<span class="number">31</span>)</span><br><span class="line">	at org.apache.ibatis.type.IntegerTypeHandler.setNonNullParameter(IntegerTypeHandler.java:<span class="number">26</span>)</span><br><span class="line">	at org.apache.ibatis.type.BaseTypeHandler.setParameter(BaseTypeHandler.java:<span class="number">69</span>)</span><br><span class="line">	... <span class="number">84</span> more</span><br></pre></td></tr></table></figure>
+<p>这里提示越界了。我们查看源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Constructs a prepared statement on a provided connection.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> conn Connection on which to create the prepared statement.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> sql The SQL script to prepare.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> SQLException</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="title">CorePreparedStatement</span><span class="params">(SQLiteConnection conn, String sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>(conn);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">this</span>.sql = sql;</span><br><span class="line">       DB db = conn.getDatabase();</span><br><span class="line">       db.prepare(<span class="keyword">this</span>);</span><br><span class="line">       rs.colsMeta = db.column_names(pointer);</span><br><span class="line">       columnCount = db.column_count(pointer);</span><br><span class="line">       paramCount = db.bind_parameter_count(pointer);</span><br><span class="line">       paramValid = <span class="keyword">new</span> BitSet(paramCount);</span><br><span class="line">       batchQueryCount = <span class="number">0</span>;</span><br><span class="line">       batch = <span class="keyword">null</span>;</span><br><span class="line">       batchPos = <span class="number">0</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   ...</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Assigns the object value to the element at the specific position of array</span></span><br><span class="line"><span class="comment">    * batch.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> pos</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> value</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> SQLException</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">batch</span><span class="params">(<span class="keyword">int</span> pos, Object value)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">       checkOpen();</span><br><span class="line">       <span class="keyword">if</span> (batch == <span class="keyword">null</span>) &#123;</span><br><span class="line">           batch = <span class="keyword">new</span> Object[paramCount];</span><br><span class="line">           paramValid.clear();</span><br><span class="line">       &#125;</span><br><span class="line">       batch[batchPos + pos - <span class="number">1</span>] = value;</span><br><span class="line">       paramValid.set(pos - <span class="number">1</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>paramCount</code>这个变量小于实际变量值，同时batch方法中Object数组长度固定，因此导致了数据越界。</p>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><blockquote>
+<p>由于时间的原因采用了最low的办法，将mapper方法改写成多个，独立执行。<br>另一种是修改源码，但是时间原因还没调试好，暂时不研究了。或者使用拦截器。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">mt23</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.pettyfox.top/2021/07/27/b18776714842.html">https://blog.pettyfox.top/2021/07/27/b18776714842.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.pettyfox.top" target="_blank">mt23のBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/mybatis/">mybatis</a><a class="post-meta__tags" href="/tags/sqlite/">sqlite</a></div><div class="post_share"><div class="social-share" data-image="/images/img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/27/251b751ce141.html"><img class="prev-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">java String字符串赋值及常量池原理、StringBuilder、StringBuffer</div></div></a></div><div class="next-post pull-right"><a href="/2021/07/27/34315ea1cf81.html"><img class="next-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">python快速生成mysql千万级测试数据</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/07/27/62922453851b.html" title="JAVA实现IOU（交并比）矩阵重叠率的计算"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JAVA实现IOU（交并比）矩阵重叠率的计算</div></div></a></div><div><a href="/2021/07/27/9132527c225c.html" title="JAVA用Optional工具类处理NEP(NullointerException)的总结"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JAVA用Optional工具类处理NEP(NullointerException)的总结</div></div></a></div><div><a href="/2021/07/26/e3defa2a064f.html" title="JAVA线程状态详解"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-26</div><div class="title">JAVA线程状态详解</div></div></a></div><div><a href="/2021/07/27/026652a2e173.html" title="JDK1.8 ConcurrentHashMap computeIfAbsent 嵌套的死锁bug"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JDK1.8 ConcurrentHashMap computeIfAbsent 嵌套的死锁bug</div></div></a></div><div><a href="/2021/07/27/528b923e4dcb.html" title="JDK8u202之后,需要商业授权,但不限制个人和开发使用"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JDK8u202之后,需要商业授权,但不限制个人和开发使用</div></div></a></div><div><a href="/2021/07/27/b20d25af335e.html" title="Java List对象转为对象中某个属性的List 并且互转"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Java List对象转为对象中某个属性的List 并且互转</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/head/mt-6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mt23</div><div class="author-info__description">云淡风轻，细腻而严谨</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mathcoder23"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%85%E4%BA%8B"><span class="toc-number">1.</span> <span class="toc-text">故事</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#xml%E5%A4%9Asql"><span class="toc-number">1.1.</span> <span class="toc-text">xml多sql</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">解决办法</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By mt23</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><span class="footer-separator">|</span><span> </span><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">蜀ICP备19018857号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JAVA线程状态详解 | mt23のBlog</title><meta name="keywords" content="java"><meta name="author" content="mt23"><meta name="copyright" content="mt23"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Java中线程状态源码 java包位置：java.lang.Thread.State（Thread的内部枚举类）  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364public enum State &amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA线程状态详解">
+<meta property="og:url" content="https://blog.pettyfox.top/2021/07/26/e3defa2a064f.html">
+<meta property="og:site_name" content="mt23のBlog">
+<meta property="og:description" content="Java中线程状态源码 java包位置：java.lang.Thread.State（Thread的内部枚举类）  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364public enum State &amp;#12">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.pettyfox.top/images/img.jpg">
+<meta property="article:published_time" content="2021-07-26T10:27:22.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:40:09.692Z">
+<meta property="article:author" content="mt23">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.pettyfox.top/images/img.jpg"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://blog.pettyfox.top/2021/07/26/e3defa2a064f"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'JAVA线程状态详解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-27 09:40:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/head/mt-6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mt23のBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JAVA线程状态详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-26T10:27:22.000Z" title="发表于 2021-07-26 18:27:22">2021-07-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-27T01:40:09.692Z" title="更新于 2021-07-27 09:40:09">2021-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/java/">java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JAVA线程状态详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><span id="more"></span>
+<h1 id="Java中线程状态源码"><a href="#Java中线程状态源码" class="headerlink" title="Java中线程状态源码"></a>Java中线程状态源码</h1><blockquote>
+<p>java包位置：java.lang.Thread.State（Thread的内部枚举类）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">public enum State &#123;</span><br><span class="line">        /**</span><br><span class="line">         * Thread state for a thread which has not yet started.</span><br><span class="line">         */</span><br><span class="line">        NEW,</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * Thread state for a runnable thread.  A thread in the runnable</span><br><span class="line">         * state is executing in the Java virtual machine but it may</span><br><span class="line">         * be waiting for other resources from the operating system</span><br><span class="line">         * such as processor.</span><br><span class="line">         */</span><br><span class="line">        RUNNABLE,</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * Thread state for a thread blocked waiting for a monitor lock.</span><br><span class="line">         * A thread in the blocked state is waiting for a monitor lock</span><br><span class="line">         * to enter a synchronized block/method or</span><br><span class="line">         * reenter a synchronized block/method after calling</span><br><span class="line">         * &#123;@link Object#wait() Object.wait&#125;.</span><br><span class="line">         */</span><br><span class="line">        BLOCKED,</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * Thread state for a waiting thread.</span><br><span class="line">         * A thread is in the waiting state due to calling one of the</span><br><span class="line">         * following methods:</span><br><span class="line">         * &lt;ul&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link Object#wait() Object.wait&#125; with no timeout&lt;/li&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link #join() Thread.join&#125; with no timeout&lt;/li&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link LockSupport#park() LockSupport.park&#125;&lt;/li&gt;</span><br><span class="line">         * &lt;/ul&gt;</span><br><span class="line">         *</span><br><span class="line">         * &lt;p&gt;A thread in the waiting state is waiting for another thread to</span><br><span class="line">         * perform a particular action.</span><br><span class="line">         *</span><br><span class="line">         * For example, a thread that has called &lt;tt&gt;Object.wait()&lt;/tt&gt;</span><br><span class="line">         * on an object is waiting for another thread to call</span><br><span class="line">         * &lt;tt&gt;Object.notify()&lt;/tt&gt; or &lt;tt&gt;Object.notifyAll()&lt;/tt&gt; on</span><br><span class="line">         * that object. A thread that has called &lt;tt&gt;Thread.join()&lt;/tt&gt;</span><br><span class="line">         * is waiting for a specified thread to terminate.</span><br><span class="line">         */</span><br><span class="line">        WAITING,</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * Thread state for a waiting thread with a specified waiting time.</span><br><span class="line">         * A thread is in the timed waiting state due to calling one of</span><br><span class="line">         * the following methods with a specified positive waiting time:</span><br><span class="line">         * &lt;ul&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link #sleep Thread.sleep&#125;&lt;/li&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link Object#wait(long) Object.wait&#125; with timeout&lt;/li&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link #join(long) Thread.join&#125; with timeout&lt;/li&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link LockSupport#parkNanos LockSupport.parkNanos&#125;&lt;/li&gt;</span><br><span class="line">         *   &lt;li&gt;&#123;@link LockSupport#parkUntil LockSupport.parkUntil&#125;&lt;/li&gt;</span><br><span class="line">         * &lt;/ul&gt;</span><br><span class="line">         */</span><br><span class="line">        TIMED_WAITING,</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * Thread state for a terminated thread.</span><br><span class="line">         * The thread has completed execution.</span><br><span class="line">         */</span><br><span class="line">        TERMINATED;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Java中线程状态-六种"><a href="#Java中线程状态-六种" class="headerlink" title="Java中线程状态(六种)"></a>Java中线程状态(六种)</h1><h2 id="1-NEW"><a href="#1-NEW" class="headerlink" title="1.NEW"></a>1.NEW</h2><blockquote>
+<p>新建状态，表示一个Thread刚刚被创建出来，还没有启动</p>
+</blockquote>
+<h2 id="2-RUNNABLE"><a href="#2-RUNNABLE" class="headerlink" title="2.RUNNABLE"></a>2.RUNNABLE</h2><blockquote>
+<p>运行状态，表示线程处于JVM层面的运行态。一个新创建好的线程，调用其start()方法后，就会由NEW状态迁移到RUNNABLE状态。需要注意的是：这里的RUNNABLE是相对于JVM的状态来说的，而线程具体何时运行，取决于操作系统底层的资源调度。</p>
+</blockquote>
+<h2 id="3-BLOCKED"><a href="#3-BLOCKED" class="headerlink" title="3.BLOCKED"></a>3.BLOCKED</h2><blockquote>
+<p>阻塞状态，表示线程正在等待一个监视器锁(monitor lock)，而监视器锁在Java代码中的体现就是synchronized关键字。也就是说：只有线程在等待进入synchronized修饰的代码块或方法时，线程才处于BLOCKED状态。</p>
+</blockquote>
+<h2 id="4-WAITING"><a href="#4-WAITING" class="headerlink" title="4.WAITING"></a>4.WAITING</h2><blockquote>
+<p>处于这种状态的线程不会被分配CPU执行时间，它们要等待被显式地唤醒，否则会处于无限期等待的状态。</p>
+</blockquote>
+<blockquote>
+<p>等待状态，表示线程在等待某些条件的到达。在调用以下方法后，线程会进入WAITING状态：<br>Object中定义的无超时的wait()方法，等待一个同步监视器的唤醒；<br>Thread中定义的无超时的join()方法，等待其他线程执行完毕；<br>LockSupport.park()方法。</p>
+</blockquote>
+<h2 id="5-TIMED-WAITING"><a href="#5-TIMED-WAITING" class="headerlink" title="5.TIMED_WAITING"></a>5.TIMED_WAITING</h2><blockquote>
+<p>处于这种状态的线程不会被分配CPU执行时间，不会无线等待，在达到一定时间后它们会自动唤醒。</p>
+</blockquote>
+<blockquote>
+<p>超时等待状态，与WAITING状态类似，并在其基础上，增加了超时的限制。在调用以下方法后，线程会进入TIMED_WAITING状态：<br>Thread.sleep()方法，线程定时休眠；<br>Object中定义的带超时的wait()方法；<br>Thread中定义的带超时的join()方法；<br>LockSupport.parkNanos()方法；<br>LockSupport.parkUntil()方法。</p>
+</blockquote>
+<h2 id="6-TERMINATED"><a href="#6-TERMINATED" class="headerlink" title="6.TERMINATED"></a>6.TERMINATED</h2><blockquote>
+<p>终止状态，包括线程正常执行完毕和异常终止。</p>
+</blockquote>
+<h1 id="Linux系统的线程状态-这块内容过于复杂仅供参考"><a href="#Linux系统的线程状态-这块内容过于复杂仅供参考" class="headerlink" title="Linux系统的线程状态(这块内容过于复杂仅供参考)"></a>Linux系统的线程状态(这块内容过于复杂仅供参考)</h1><p>先简单谈谈CPU的调度(仅供参考，因为没对操作系统进行细致的研究)</p>
+<ol>
+<li>如果线程完全在内核态中实现（内核线程，KLT），内核调度的单元是线程。此时，进程与线程的区别非常微妙。</li>
+<li>如果线程完全在用户态实现（用户线程，ULT），内核调度的单元是进程，内核对用户线程一无所知。内核只负责分配CPU给进程，进程得到CPU会后再分配给内部的线程</li>
+</ol>
+<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p>运行态（此进程实际占用CPU）</p>
+<p>就绪态（可运行，但因其他进程正在运行而暂时停止）</p>
+<p>阻塞态（除非某种外部事件发生，否则进程不能运行）</p>
+<h1 id="操作系统线程状态与JVM线程状态区别"><a href="#操作系统线程状态与JVM线程状态区别" class="headerlink" title="操作系统线程状态与JVM线程状态区别"></a>操作系统线程状态与JVM线程状态区别</h1><blockquote>
+<p>上面介绍了操作系统线程状态其实就想说明一下一些问题：</p>
+</blockquote>
+<ol>
+<li>JAVA中的六种线程状态是相对于JVM而言的，与操作系统无关。之所以定义这些状态是为了从JVM层面来管理线程</li>
+<li>说一下JAVA线程的RUNNABLE状态，从字面意思来讲是“可运行的”，但实际上，假如线程处于RUNNABLE状态，对应的线程是否被CPU调度，JVM是不知道的，不关心的，不透明的。即从CPU来讲该线程可能是“阻塞态”、“运行态”、“就绪态”，这里的状态并非JVM状态。</li>
+</ol>
+<h1 id="JAVA线程状态与占用CPU关系"><a href="#JAVA线程状态与占用CPU关系" class="headerlink" title="JAVA线程状态与占用CPU关系"></a>JAVA线程状态与占用CPU关系</h1><ol>
+<li>仅有线程状态为RUNNABLE时，才可能占用CPU，这里是可能，但其实从JVM层面来讲，RUNNABLE就是在占用CPU资源，从操作系统层面来讲，RUNNABLE可能再占用CPU资源，这可能很矛盾，但这是每个层面的视角不同而已。</li>
+<li>非RUNNABLE状态，一定不占用CPU资源</li>
+</ol>
+<h1 id="JAVA线程相关方法与线程状态、锁的关系"><a href="#JAVA线程相关方法与线程状态、锁的关系" class="headerlink" title="JAVA线程相关方法与线程状态、锁的关系"></a>JAVA线程相关方法与线程状态、锁的关系</h1><h2 id="Thread-sleep-long-millis-方法"><a href="#Thread-sleep-long-millis-方法" class="headerlink" title="Thread.sleep(long millis)方法"></a>Thread.sleep(long millis)方法</h2><p><strong>方法作用：</strong> 延时、阻塞<br><strong>线程状态：</strong>  TIMED_WAITING<br><strong>锁特点：</strong>     不释放锁<br><strong>代码块：</strong>     阻塞代码块</p>
+<h2 id="Thread-yield-方法"><a href="#Thread-yield-方法" class="headerlink" title="Thread.yield()方法"></a>Thread.yield()方法</h2><p><strong>方法作用：</strong> 通知操作系统底层，放弃当前的CPU时间片，yield也可以理解为线程让步,但并非绝对让步，依然需要根据线程调度优先级来决定。个人感觉，这个方法的使用场景更像是在一些当前线程高度占用CPU时，均衡一些次要线程的调度。<br><strong>线程状态：</strong>  RUNNABLE<br><strong>锁特点：</strong>     不释放锁<br><strong>代码块：</strong>     不阻塞</p>
+<h2 id="obj-wait-obj-wait-long-millis-方法"><a href="#obj-wait-obj-wait-long-millis-方法" class="headerlink" title="obj.wait()/obj.wait(long millis)方法"></a>obj.wait()/obj.wait(long millis)方法</h2><p><strong>方法作用：</strong> 使线程等待，依靠notify()/notifyAll()唤醒或者wait(long timeout) timeout时间到自动唤醒。<br><strong>线程状态：</strong>  WAITING/TIMED_WAITING<br><strong>锁特点：</strong>     释放锁<br><strong>代码块：</strong>     阻塞.</p>
+<h2 id="thread-join-thread-join-long-millis-方法"><a href="#thread-join-thread-join-long-millis-方法" class="headerlink" title="thread.join()/thread.join(long millis)方法"></a>thread.join()/thread.join(long millis)方法</h2><p><strong>方法作用：</strong> 线程A执行了thread.join()语句，其含义是：当前线程A等待thread线程终止之后才从thread.join()返回<br><strong>线程状态：</strong>  WAITING/TIMED_WAITING<br><strong>锁特点：</strong>     不释放锁<br><strong>代码块：</strong>     阻塞</p>
+<h2 id="obj-notify-方法"><a href="#obj-notify-方法" class="headerlink" title="obj.notify()方法"></a>obj.notify()方法</h2><p><strong>方法作用：</strong> 唤醒在此对象监视器上等待的单个线程，选择是任意性的。notifyAll()唤醒在此对象监视器上等待的所有线程。<br><strong>线程状态：</strong>  RUNNABLE<br><strong>锁特点：</strong>     不释放锁<br><strong>代码块：</strong>     不阻塞</p>
+<h2 id="LockSupport-park-LockSupport-parkNanos-long-nanos-LockSupport-parkUntil-long-deadlines-方法"><a href="#LockSupport-park-LockSupport-parkNanos-long-nanos-LockSupport-parkUntil-long-deadlines-方法" class="headerlink" title="LockSupport.park()/LockSupport.parkNanos(long nanos),LockSupport.parkUntil(long deadlines)方法"></a>LockSupport.park()/LockSupport.parkNanos(long nanos),LockSupport.parkUntil(long deadlines)方法</h2><p><strong>方法作用：</strong> 不需要获得锁就可以让线程进入WAITING/TIMED_WAITING状态，LockSupport.unpark(Thread thread)唤醒<br><strong>线程状态：</strong>  WAITING/TIMED_WAITING<br><strong>锁特点：</strong>     不需要获得锁就可以让线程进入等待态<br><strong>代码块：</strong>     不阻塞</p>
+<p>参考文献：<a target="_blank" rel="noopener" href="https://blog.csdn.net/pange1991/article/details/53860651">Java线程的6种状态及切换(透彻讲解)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">mt23</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.pettyfox.top/2021/07/26/e3defa2a064f.html">https://blog.pettyfox.top/2021/07/26/e3defa2a064f.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.pettyfox.top" target="_blank">mt23のBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a></div><div class="post_share"><div class="social-share" data-image="/images/img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/26/97741733145d.html"><img class="prev-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">html用原生锚点定位在vue中兼容页内锚点定位的简单方法</div></div></a></div><div class="next-post pull-right"><a href="/2021/07/26/0b8aaecdc202.html"><img class="next-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">vue-quill-editor 图片实现自定义服务器上传的简单方法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/07/27/62922453851b.html" title="JAVA实现IOU（交并比）矩阵重叠率的计算"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JAVA实现IOU（交并比）矩阵重叠率的计算</div></div></a></div><div><a href="/2021/07/27/9132527c225c.html" title="JAVA用Optional工具类处理NEP(NullointerException)的总结"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JAVA用Optional工具类处理NEP(NullointerException)的总结</div></div></a></div><div><a href="/2021/07/27/026652a2e173.html" title="JDK1.8 ConcurrentHashMap computeIfAbsent 嵌套的死锁bug"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JDK1.8 ConcurrentHashMap computeIfAbsent 嵌套的死锁bug</div></div></a></div><div><a href="/2021/07/27/528b923e4dcb.html" title="JDK8u202之后,需要商业授权,但不限制个人和开发使用"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">JDK8u202之后,需要商业授权,但不限制个人和开发使用</div></div></a></div><div><a href="/2021/07/27/b20d25af335e.html" title="Java List对象转为对象中某个属性的List 并且互转"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Java List对象转为对象中某个属性的List 并且互转</div></div></a></div><div><a href="/2021/07/27/f3c53b0e721a.html" title="Java OpenCV关于Mat的常用操作 修改尺寸 旋转 翻转 文字"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Java OpenCV关于Mat的常用操作 修改尺寸 旋转 翻转 文字</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/head/mt-6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mt23</div><div class="author-info__description">云淡风轻，细腻而严谨</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mathcoder23"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E4%B8%AD%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E6%BA%90%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">Java中线程状态源码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E4%B8%AD%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81-%E5%85%AD%E7%A7%8D"><span class="toc-number">2.</span> <span class="toc-text">Java中线程状态(六种)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-NEW"><span class="toc-number">2.1.</span> <span class="toc-text">1.NEW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RUNNABLE"><span class="toc-number">2.2.</span> <span class="toc-text">2.RUNNABLE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BLOCKED"><span class="toc-number">2.3.</span> <span class="toc-text">3.BLOCKED</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-WAITING"><span class="toc-number">2.4.</span> <span class="toc-text">4.WAITING</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-TIMED-WAITING"><span class="toc-number">2.5.</span> <span class="toc-text">5.TIMED_WAITING</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-TERMINATED"><span class="toc-number">2.6.</span> <span class="toc-text">6.TERMINATED</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81-%E8%BF%99%E5%9D%97%E5%86%85%E5%AE%B9%E8%BF%87%E4%BA%8E%E5%A4%8D%E6%9D%82%E4%BB%85%E4%BE%9B%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">Linux系统的线程状态(这块内容过于复杂仅供参考)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-number">3.1.</span> <span class="toc-text">进程的状态</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E4%B8%8EJVM%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">操作系统线程状态与JVM线程状态区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVA%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E4%B8%8E%E5%8D%A0%E7%94%A8CPU%E5%85%B3%E7%B3%BB"><span class="toc-number">5.</span> <span class="toc-text">JAVA线程状态与占用CPU关系</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVA%E7%BA%BF%E7%A8%8B%E7%9B%B8%E5%85%B3%E6%96%B9%E6%B3%95%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E3%80%81%E9%94%81%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">6.</span> <span class="toc-text">JAVA线程相关方法与线程状态、锁的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread-sleep-long-millis-%E6%96%B9%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text">Thread.sleep(long millis)方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thread-yield-%E6%96%B9%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">Thread.yield()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#obj-wait-obj-wait-long-millis-%E6%96%B9%E6%B3%95"><span class="toc-number">6.3.</span> <span class="toc-text">obj.wait()&#x2F;obj.wait(long millis)方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#thread-join-thread-join-long-millis-%E6%96%B9%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text">thread.join()&#x2F;thread.join(long millis)方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#obj-notify-%E6%96%B9%E6%B3%95"><span class="toc-number">6.5.</span> <span class="toc-text">obj.notify()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LockSupport-park-LockSupport-parkNanos-long-nanos-LockSupport-parkUntil-long-deadlines-%E6%96%B9%E6%B3%95"><span class="toc-number">6.6.</span> <span class="toc-text">LockSupport.park()&#x2F;LockSupport.parkNanos(long nanos),LockSupport.parkUntil(long deadlines)方法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By mt23</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><span class="footer-separator">|</span><span> </span><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">蜀ICP备19018857号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

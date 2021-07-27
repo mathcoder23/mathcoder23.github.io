@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>mt23のBlog - blog</title><meta name="author" content="mt23"><meta name="copyright" content="mt23"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="云淡风轻，细腻而严谨">
+<meta property="og:type" content="website">
+<meta property="og:title" content="mt23のBlog">
+<meta property="og:url" content="https://blog.pettyfox.top/">
+<meta property="og:site_name" content="mt23のBlog">
+<meta property="og:description" content="云淡风轻，细腻而严谨">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.pettyfox.top/images/head/mt-6.png">
+<meta property="article:author" content="mt23">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.pettyfox.top/images/head/mt-6.png"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://blog.pettyfox.top/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'mt23のBlog',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-27 09:57:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/head/mt-6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/images/img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mt23のBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">mt23のBlog</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="content">JSON.stringify 判断空对象12let obj = &#123;&#125;let isNull = &quot;&#123;&#125;&quot; === JSON.stringify(obj) //如果obj数据量大，性能将会受到影响
+
+Object.keys 判断空对象12let obj = &#123;&#125; //Object.keys 不能传入null,否则报错let isNull = 0 === Object.keys(obj).length //通过对象的属性个数判断，推荐此方法
+
+
+判断的对象前提当然要保证目标是实体对象实体对象判断： “object” === typeof obj &amp;&amp; null !== obj &amp;&amp; !Array.isArray(obj)对象和数组判断： “object” === typeof obj &amp;&amp; null !== obj 
+
+Object.Keys 也可判断空数组,当然单纯的空数组判断用 arr.length 来判断就行了
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91/">开发</a></span></div><div class="content">#命令
+
+mvn install:install-file
+
+#参数
+
+-Dfile=D:\xxx.jar
+-DartifactId=org.xxx
+-Dversion=1.0.0
+-Dpackaging=jar
+
+#演示
+
+mvn install:install-file -Dfile=D:\taobao-sdk-java-auto_1508223385701-20180408.jar -DgroupId=com.taobao -DartifactId=taobao-sdk-java-auto -Dversion=taobao-sdk-20180408 -Dpackaging=jar
+
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91/">开发</a></span></div><div class="content">#需求说明
+
+
+用户通过不同的域名，访问同一个nginx，实现不同ip的代理。a.domain.com 和 c.domain.com的域名解析地址是相同的，但内部代理到不同的ip处理
+
+#通过nginx的$host变量和upstream的方式
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677user root root;worker_processes 1;pid /home/huaqi/yc/nginx/nginx.pid;worker_rlimit_nofile 1024;events&#123;        use epoll;        worker_connections 1024;&#125;http &#123;        include       mime.types;        default_type  appl ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java/">java</a></span></div><div class="content">简介
+根据xxl-job修改，如果侵权请联系删除
+
+源git地址 https://github.com/xuxueli/xxl-job/
+fork地址 https://github.com/mathcoder23/xxl-job
+说明
+xxj-job官方本身提供了docker镜像，但是我感觉官方提供的镜像配置不方便。因此改造一下，支持为获取系统的环境变量的方式配置xxl-job
+
+使用方法(2.0.2为例)源代码在fork仓库的，2.0.2-docker分支中1，在git仓库中找到对应版本，运行doc下的sql文件，创建数据库及表https://raw.githubusercontent.com/mathcoder23/xxl-job/2.0.2-docker/doc/db/tables_xxl_job.sql2，在docker的yml文件中配置好外部信息，运行docker-compose -f docker-xxl.yml up  or     docker stack deploy -c docker-xxl.yml xxl-job
+yml文件
+文件地址:https://raw.g ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/docker/">docker</a></span></div><div class="content">简介
+容器存放在阿里云公开镜像库中基于alpine,新增了中国时区，解决时区问题
+
+地址registry.cn-hangzhou.aliyuncs.com/mt23/jre8-alpine-shanghai
+Dockerfile123456789FROM openjdk:8-jre-alpineMAINTAINER mt23ENV TZ=PRCRUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone#ADD target/demo-0.0.1-SNAPSHOT.jar /app.jar##ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar /app.jar &quot;]
+用法
+集成此镜像库，添加
+
+12345FROM registry.cn-hangzhou.aliyuncs.com/mt23/jre8-alpine-shanghai:1.0.0ADD target/demo-0.0.1-SNAPSH ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/4119a37b8746.html" title="spring-boot 项目日志打印项目版本和构建时间">spring-boot 项目日志打印项目版本和构建时间</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:31:23.000Z" title="发表于 2021-07-27 09:31:23">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java/">java</a></span></div><div class="content">功能
+在spring-boot项目启动时，将会打印项目的基本信息：服务名称，pom中的项目版本，以及jar包构建的时间,方便检测服务是否更新到正确的版本，也可以提供接口访问
+
+实现步骤(steps 2)step 1 添加服务启动的前置执行代码1234567891011121314151617181920212223242526272829303132333435363738394041import lombok.extern.slf4j.Slf4j;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.beans.factory.annotation.Value;import org.springframework.beans.factory.config.BeanPostProcessor;import org.springframework.context.annotation.Configuration;import org.springframework. ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/2b92fb91f9f0.html" title="长期使用笔记本触控板请以中指为主">长期使用笔记本触控板请以中指为主</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:31:03.000Z" title="发表于 2021-07-27 09:31:03">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BB%8F%E9%AA%8C/">经验</a></span></div><div class="content">说明
+最近在笔记本上连续写程序，加上对mac触控板的爱不释手，快捷操作，点击触感真的很良心。但是永久了发现食指痛的不行，所以不得不分析下原因
+
+以食指为主使用触控板食指关节出现劳损
+声明，我不能确定我使用食指的方式是否符合规范，所以不排除因为我的食指使用不规范造成关节劳损的问题。当我使用触控板时，右手靠在桌上，当前手的食指第三关节将在最高点，在触控板上移动鼠标时，主要发力的地方有两处，1，整个手腕，2，食指的第三关节(从外向内数)，问题就在第二点当长期性周期性的这样，第二发力点会出现劳损的情况。
+
+以中指为主使用触控板
+由上了解发力点后，当你尝试使用中指，你会发现中指与触控板距离适中，而且在移动鼠标时，主要发力点只会有手腕发力，中指关节运动幅度很小，因此长期性周期性的使用，有比较良好的反应。
+
+关于长期性周期性
+简单来讲，作为长期性周期的行为都会有负担，因此良好的休息与活动是必要的，比如，上面说到的手腕、还有手一直弯曲，保持这种状态，都将出现问题，那你可能会说那我用食指经常休息就好，但其实不然，食指当对中指在触控板上使用但承受程度会弱很多，就如写程序一般、要稳定但长期的健壮的运行，必然 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/27da03cb8e65.html" title="/oauth/check_token 401">/oauth/check_token 401</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:30:46.000Z" title="发表于 2021-07-27 09:30:46">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91/">开发</a></span></div><div class="content">检查token的接口无法使用
+此接口没有允许，默认是不允许访问
+
+方法一12345678// AuthorizationServerConfigurerAdapter	@Override    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception &#123;        //允许表单认证        oauthServer.allowFormAuthenticationForClients();        oauthServer.checkTokenAccess(&quot;permitAll()&quot;);    &#125;
+方法二security.oauth2.authorization.check-token-access=permitAll()
+参考 https://stackoverflow.com/questions/26750999/spring-security-oauth2-check-token-endpoint
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/6877ff7b5497.html" title="如何理解张量">如何理解张量</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:30:25.000Z" title="发表于 2021-07-27 09:30:25">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="content">以下乱扯，随便看看
+先把数据上升到一定高度那就是 信号
+信息论(信号)包括音频、视频、语音、图像、通信、地球物理、声纳、雷达、医疗和音乐信号等。出自 wiki-信号 (信息论)
+数学向量读过高中出现过两种信息量，数学向量与物理矢量，其实他们虽然名字不同，但他们的目的是相同的，数学向量是对信号表达的一种数学语言能够识别的方式。物理矢量是对信号表达的一种物理语言能够识别的格式。他们的各种计算完全一样。
+张量所以可以认为张量是对信号表达的一种计算机能识别的格式。特别的在深度学习中更为常见。那张量是应该如何表达信号？
+nD张量
+首先定义张量可以有n个维度即n个轴，也叫nD张量，每一个维度可以表达各种各样的信息。比如一个人有[身高、体重、智商、情商]，那么我们就可以用一个4个维度的4D张量，来将这个人转换为信号，一种深度学习能够识别的格式来进行表达。当然人不可能仅仅有这些信息，我们只取我们需要的。
+信号与张量
+这里强调张量是信号的一种表达方式，所以，无论是0D张量，还是nD张量来讲，不管张量维度如何增加、减少，信号本身不会有任何改变，因为每个纬度都是无穷的数据组成，无穷的维度的无穷数据，都可以用 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/07/27/372e83122421.html" title="预测周期数列理解LSTM输入输出">预测周期数列理解LSTM输入输出</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-27T01:30:11.000Z" title="发表于 2021-07-27 09:30:11">2021-07-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="content">这两天被LSTM搞的头大，作为深度学习只入门四天的我对各式各样的名词真心无力。但好在功夫不负有心人，终于初步理解了LSTM
+目标
+以周期数列为例，学习LSTM的使用，并初步理解LSTM的输入与输出
+
+LSTM应用场景数据涉及到序列的，并且序列数据有界。都可以以LSTM为核心来进行学习。
+怎样的数据涉及到序列，以本文的周期数列为例子，每一项，都与之前项有必然的链式关系，并且数据有界，一般的，但凡有存在链式关系的数据，都可以进行泛化预测。天气预报、语言对话(NLP)，温度预测，乃至股票预测都是可能的，但是这些都有一个非常非常重要的因素，那就是相关数据的分析，比如影响温度的因素是什么？所以从这一点来说，股票又是不可预测的。需要注意的是像如发散的无穷数列是很难使用LSTM预测的。因为如果预测样本不在拟合的范围内。此时预测的数据是很难的。
+从一开始我一直想预测等差数列，但是效果太差，只有靠近样本中心，效果才会好，我一直以为是我对LSTM的理解用法有问题，但我今天在取快递的路上突然想到，如果训练数据都在一个边界内训练，要想预测边界外的数据理论上是不可能的，因为情况太多。因此我认为要想能够预测等差数 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/#content-inner">9</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/head/mt-6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mt23</div><div class="author-info__description">云淡风轻，细腻而严谨</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mathcoder23"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/docker/"><span class="card-category-list-name">docker</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/git/"><span class="card-category-list-name">git</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/java/"><span class="card-category-list-name">java</span><span class="card-category-list-count">27</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/linux/"><span class="card-category-list-name">linux</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/nginx/"><span class="card-category-list-name">nginx</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/spring/"><span class="card-category-list-name">spring</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/spring/boot/"><span class="card-category-list-name">boot</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/"><span class="card-category-list-name">前端</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/IDEA/" style="font-size: 1.1em; color: #999">IDEA</a> <a href="/tags/boot/" style="font-size: 1.1em; color: #999">boot</a> <a href="/tags/bug/" style="font-size: 1.43em; color: #99a6b9">bug</a> <a href="/tags/cache/" style="font-size: 1.1em; color: #999">cache</a> <a href="/tags/chrome/" style="font-size: 1.1em; color: #999">chrome</a> <a href="/tags/css/" style="font-size: 1.1em; color: #999">css</a> <a href="/tags/docker/" style="font-size: 1.37em; color: #99a4b2">docker</a> <a href="/tags/dubbo/" style="font-size: 1.1em; color: #999">dubbo</a> <a href="/tags/frp/" style="font-size: 1.1em; color: #999">frp</a> <a href="/tags/git/" style="font-size: 1.23em; color: #999ea6">git</a> <a href="/tags/gitlab/" style="font-size: 1.1em; color: #999">gitlab</a> <a href="/tags/gradle/" style="font-size: 1.1em; color: #999">gradle</a> <a href="/tags/guava/" style="font-size: 1.1em; color: #999">guava</a> <a href="/tags/html/" style="font-size: 1.17em; color: #999c9f">html</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/javascript/" style="font-size: 1.1em; color: #999">javascript</a> <a href="/tags/jna/" style="font-size: 1.1em; color: #999">jna</a> <a href="/tags/js/" style="font-size: 1.23em; color: #999ea6">js</a> <a href="/tags/linux/" style="font-size: 1.1em; color: #999">linux</a> <a href="/tags/mac/" style="font-size: 1.1em; color: #999">mac</a> <a href="/tags/map/" style="font-size: 1.1em; color: #999">map</a> <a href="/tags/maven/" style="font-size: 1.23em; color: #999ea6">maven</a> <a href="/tags/mybatis/" style="font-size: 1.17em; color: #999c9f">mybatis</a> <a href="/tags/mysql/" style="font-size: 1.23em; color: #999ea6">mysql</a> <a href="/tags/nacos/" style="font-size: 1.1em; color: #999">nacos</a> <a href="/tags/netty/" style="font-size: 1.1em; color: #999">netty</a> <a href="/tags/nginx/" style="font-size: 1.23em; color: #999ea6">nginx</a> <a href="/tags/nodejs/" style="font-size: 1.1em; color: #999">nodejs</a> <a href="/tags/oauth/" style="font-size: 1.1em; color: #999">oauth</a> <a href="/tags/opencv/" style="font-size: 1.17em; color: #999c9f">opencv</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/security/" style="font-size: 1.1em; color: #999">security</a> <a href="/tags/spring/" style="font-size: 1.1em; color: #999">spring</a> <a href="/tags/spring-boot/" style="font-size: 1.3em; color: #99a1ac">spring-boot</a> <a href="/tags/spring-security/" style="font-size: 1.1em; color: #999">spring-security</a> <a href="/tags/sqlite/" style="font-size: 1.1em; color: #999">sqlite</a> <a href="/tags/tls/" style="font-size: 1.17em; color: #999c9f">tls</a> <a href="/tags/uni-app/" style="font-size: 1.17em; color: #999c9f">uni-app</a> <a href="/tags/vue/" style="font-size: 1.3em; color: #99a1ac">vue</a> <a href="/tags/websocket/" style="font-size: 1.1em; color: #999">websocket</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/07/"><span class="card-archive-list-date">七月 2021</span><span class="card-archive-list-count">68</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/12/"><span class="card-archive-list-date">十二月 2019</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/03/"><span class="card-archive-list-date">三月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/02/"><span class="card-archive-list-date">二月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/01/"><span class="card-archive-list-date">一月 2018</span><span class="card-archive-list-count">9</span></a></li></ul></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By mt23</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><span class="footer-separator">|</span><span> </span><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">蜀ICP备19018857号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    var typed = new Typed("#subtitle", {
+      strings: "Hello World!,在这幽静的深夜&#44;请您见证我的努力!".split(","),
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: false,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = 'H'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

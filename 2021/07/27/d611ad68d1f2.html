@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SpringBoot2集成Spock-Groovy测试框架从零开始 | mt23のBlog</title><meta name="keywords" content="spring-boot"><meta name="author" content="mt23"><meta name="copyright" content="mt23"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="其他SpringBoot2集成Spock真的是千篇一律,而且一些细节问题还是比较多.花费了2个小时才集成完毕.此篇文章将会从maven导包开始,介绍如何集成Spock以及使用,如果有任何不足或问题之处请斧正. 前言关于Groovy,Spock以及SpringBoot2测试本身的概念这里就不详细说了,资料也很多 maven集成Spock,Groovy1234567891011121314151617">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot2集成Spock-Groovy测试框架从零开始">
+<meta property="og:url" content="https://blog.pettyfox.top/2021/07/27/d611ad68d1f2.html">
+<meta property="og:site_name" content="mt23のBlog">
+<meta property="og:description" content="其他SpringBoot2集成Spock真的是千篇一律,而且一些细节问题还是比较多.花费了2个小时才集成完毕.此篇文章将会从maven导包开始,介绍如何集成Spock以及使用,如果有任何不足或问题之处请斧正. 前言关于Groovy,Spock以及SpringBoot2测试本身的概念这里就不详细说了,资料也很多 maven集成Spock,Groovy1234567891011121314151617">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.pettyfox.top/images/img.jpg">
+<meta property="article:published_time" content="2021-07-27T01:16:28.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:50:23.389Z">
+<meta property="article:author" content="mt23">
+<meta property="article:tag" content="spring-boot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.pettyfox.top/images/img.jpg"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://blog.pettyfox.top/2021/07/27/d611ad68d1f2"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SpringBoot2集成Spock-Groovy测试框架从零开始',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-27 09:50:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/head/mt-6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mt23のBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">SpringBoot2集成Spock-Groovy测试框架从零开始</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-27T01:16:28.000Z" title="发表于 2021-07-27 09:16:28">2021-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-27T01:50:23.389Z" title="更新于 2021-07-27 09:50:23">2021-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/java/">java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="SpringBoot2集成Spock-Groovy测试框架从零开始"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>其他SpringBoot2集成Spock真的是千篇一律,而且一些细节问题还是比较多.花费了2个小时才集成完毕.此篇文章将会从maven导包开始,介绍如何集成Spock以及使用,如果有任何不足或问题之处请斧正.</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>关于Groovy,Spock以及SpringBoot2测试本身的概念这里就不详细说了,资料也很多</p>
+<h1 id="maven集成Spock-Groovy"><a href="#maven集成Spock-Groovy" class="headerlink" title="maven集成Spock,Groovy"></a>maven集成Spock,Groovy</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.spockframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spock-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3-RC1-groovy-2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.spockframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spock-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3-RC1-groovy-2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.codehaus.groovy<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>groovy-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.4.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里注意一下,</p>
+<ul>
+<li>Groovy的导入使用<code>  &lt;type&gt;pom&lt;/type&gt;</code></li>
+<li>关于版本现在是2020年4月,目前的Groovy的最新版已经到3了.Spock的最新版到了2,我是什么都想用最新的性格,但是稍微尝试了一下,发现这玩意版本似乎有点混乱跑着有点问题.所以就先集成计较稳定的老版本吧.</li>
+<li>任何库的版本,以及对应关系都是非常重要的,请重视</li>
+</ul>
+<h1 id="创建Groovy的测试类包位置"><a href="#创建Groovy的测试类包位置" class="headerlink" title="创建Groovy的测试类包位置"></a>创建Groovy的测试类包位置</h1><img src="/2021/07/27/d611ad68d1f2/1627349184923.png" class="">
+<img src="/2021/07/27/d611ad68d1f2/1627349184924.png" class="">
+
+<p>由于我们的语言使用Groovy,所以创建一个groovy文件夹,并且右键<code>Mark Directory as-&gt;Test Sources Root</code>这样文件夹就被我们绿了.绿了后的作用可以很友好的被IDEA发现,并且运行测试类</p>
+<h1 id="创建Groovy的测试类-并且使用Spock"><a href="#创建Groovy的测试类-并且使用Spock" class="headerlink" title="创建Groovy的测试类,并且使用Spock"></a>创建Groovy的测试类,并且使用Spock</h1><p>我不太喜欢手动创建测试了,这样显得太累了.我们可以得到IDEA帮助,先到一个要生成测试的类中,按住<code>Ctrl+Shift+T</code>选择Spock创建测试类,类似下面这样</p>
+<img src="/2021/07/27/d611ad68d1f2/1627349184924.png" class="">
+<img src="/2021/07/27/d611ad68d1f2/1627349184925.png" class="">
+<p>点击创建后会非常友好的在我们刚才创建的groovy文件夹中生成测试文件类</p>
+<h1 id="简单修改测试文件类-让Spock运行起来"><a href="#简单修改测试文件类-让Spock运行起来" class="headerlink" title="简单修改测试文件类,让Spock运行起来"></a>简单修改测试文件类,让Spock运行起来</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> spock.lang.Specification</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClockRecordBizTest2222222</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;test userClock&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        <span class="number">1</span>==<span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以点击方法左侧的运行按钮,如果运行成功了.并且提示测试没通过那么久说明已经正确的集成可Spock以及Groovy</p>
+<h1 id="Spock支持SpringBoot"><a href="#Spock支持SpringBoot" class="headerlink" title="Spock支持SpringBoot"></a>Spock支持SpringBoot</h1><p>终于到了重头戏,我们需要集成SpringBoot的测试.代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.iseeface.guard.service.attendance.ApplicationSpringBootTest</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.ActiveProfiles</span><br><span class="line"><span class="keyword">import</span> spock.lang.Specification</span><br><span class="line"></span><br><span class="line"><span class="meta">@ActiveProfiles(&quot;test&quot;)</span></span><br><span class="line"><span class="meta">@SpringBootTest(classes= ApplicationSpringBootTest.class,webEnvironment =SpringBootTest.WebEnvironment.RANDOM_PORT)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClockRecordBizTest2222222</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;test userClock&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        <span class="number">1</span>==<span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>点击运行就会出现SpringBoot启动的日志.这里说明一下我们使用SpringBoot2的<code>@SpringBootTest</code>注解来初始化测试入口.<br><code>ApplicationSpringBootTest</code>此类是我自己创建SpringBoot初始化入口类,请酌情修改</p>
+<h1 id="让集成Spock的SpringBoot测试更加简洁"><a href="#让集成Spock的SpringBoot测试更加简洁" class="headerlink" title="让集成Spock的SpringBoot测试更加简洁"></a>让集成Spock的SpringBoot测试更加简洁</h1><p>在上面我们通过@SpringBootTest注解实现注释,@ActiveProfiles注解配置环境文件,但是如果我们每个测试类都要写这两个代码就显得太麻烦了.所以我们建立一个接口类用来配置这些注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这里此类路径必须在待测试类的路径中.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@ActiveProfiles(&quot;test&quot;)</span></span><br><span class="line"><span class="meta">@SpringBootTest(classes= ApplicationSpringBootTest.class,webEnvironment =SpringBootTest.WebEnvironment.RANDOM_PORT)</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BaseSpringBootTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="基于BaseSpringBootTest的Spock测试"><a href="#基于BaseSpringBootTest的Spock测试" class="headerlink" title="基于BaseSpringBootTest的Spock测试"></a>基于BaseSpringBootTest的Spock测试</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.iseeface.guard.service.attendance.BaseSpringBootTest</span><br><span class="line"><span class="keyword">import</span> spock.lang.Specification</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * BaseSpringBootTest 接口为SpringBoot测试的注解入口</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClockRecordBizTest2222222</span> <span class="keyword">extends</span> <span class="title">Specification</span> <span class="keyword">implements</span> <span class="title">BaseSpringBootTest</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;test userClock&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        <span class="number">1</span>==<span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样看着是不是更加简洁了,而且很灵活,因为我们测试的一些入口配置是很可能修改的.<br>这里有个关键是<code>BaseSpringBootTest</code> 是接口类,而不是抽象类或类,因为如果基类继承<code>Specification</code>就不能很友好的使用Spock了.并且如果使用接口可以很容易扩展测试类的其他功能.比如IO相关的测试,云服务相关的测试.</p>
+<h1 id="额外赠送SpringBootTest-groovy配置"><a href="#额外赠送SpringBootTest-groovy配置" class="headerlink" title="额外赠送SpringBootTest.groovy配置"></a>额外赠送SpringBootTest.groovy配置</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> javafx.application.Application</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.annotation.EnableScheduling</span><br><span class="line"></span><br><span class="line"><span class="comment">//注意这里的中括号是数组的意思,在groovy中,数组实例用[]表示,java中是&#123;&#125;</span></span><br><span class="line"><span class="meta">@ComponentScan([&quot;com.xxx.xxx&quot;])</span></span><br><span class="line"><span class="meta">@MapperScan([&quot;com.xxx.xxx.mapper&quot;])</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicationSpringBootTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>这里千万注意,我这个是groovy文件,在groovy中的数组是使用[],而不是&#123;&#125;</code><br>本文到这里就结束了,写的很简单.没有过多地介绍SpringBoot的测试过程,以及Spock如何使用.这些将在其他文章中总结.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">mt23</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.pettyfox.top/2021/07/27/d611ad68d1f2.html">https://blog.pettyfox.top/2021/07/27/d611ad68d1f2.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.pettyfox.top" target="_blank">mt23のBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/spring-boot/">spring-boot</a></div><div class="post_share"><div class="social-share" data-image="/images/img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/27/0f235d0c8a3d.html"><img class="prev-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于netty-websocket的加密教程</div></div></a></div><div class="next-post pull-right"><a href="/2021/07/27/9132527c225c.html"><img class="next-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JAVA用Optional工具类处理NEP(NullointerException)的总结</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/07/27/cf1efae0195f.html" title="Spring Boot @RequestParam的required=true但参数依然为null"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Spring Boot @RequestParam的required=true但参数依然为null</div></div></a></div><div><a href="/2021/07/26/e138b9b4c37a.html" title="Spring Boot集成Guava EventBus并注入Bean"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-26</div><div class="title">Spring Boot集成Guava EventBus并注入Bean</div></div></a></div><div><a href="/2021/07/27/4119a37b8746.html" title="spring-boot 项目日志打印项目版本和构建时间"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">spring-boot 项目日志打印项目版本和构建时间</div></div></a></div><div><a href="/2021/07/27/39905ff10de1.html" title="spring boot2项目基础之mybatis-plus"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">spring boot2项目基础之mybatis-plus</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/head/mt-6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mt23</div><div class="author-info__description">云淡风轻，细腻而严谨</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mathcoder23"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#maven%E9%9B%86%E6%88%90Spock-Groovy"><span class="toc-number">2.</span> <span class="toc-text">maven集成Spock,Groovy</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAGroovy%E7%9A%84%E6%B5%8B%E8%AF%95%E7%B1%BB%E5%8C%85%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">创建Groovy的测试类包位置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAGroovy%E7%9A%84%E6%B5%8B%E8%AF%95%E7%B1%BB-%E5%B9%B6%E4%B8%94%E4%BD%BF%E7%94%A8Spock"><span class="toc-number">4.</span> <span class="toc-text">创建Groovy的测试类,并且使用Spock</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E4%BF%AE%E6%94%B9%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6%E7%B1%BB-%E8%AE%A9Spock%E8%BF%90%E8%A1%8C%E8%B5%B7%E6%9D%A5"><span class="toc-number">5.</span> <span class="toc-text">简单修改测试文件类,让Spock运行起来</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spock%E6%94%AF%E6%8C%81SpringBoot"><span class="toc-number">6.</span> <span class="toc-text">Spock支持SpringBoot</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A9%E9%9B%86%E6%88%90Spock%E7%9A%84SpringBoot%E6%B5%8B%E8%AF%95%E6%9B%B4%E5%8A%A0%E7%AE%80%E6%B4%81"><span class="toc-number">7.</span> <span class="toc-text">让集成Spock的SpringBoot测试更加简洁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EBaseSpringBootTest%E7%9A%84Spock%E6%B5%8B%E8%AF%95"><span class="toc-number">8.</span> <span class="toc-text">基于BaseSpringBootTest的Spock测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%9D%E5%A4%96%E8%B5%A0%E9%80%81SpringBootTest-groovy%E9%85%8D%E7%BD%AE"><span class="toc-number">9.</span> <span class="toc-text">额外赠送SpringBootTest.groovy配置</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By mt23</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><span class="footer-separator">|</span><span> </span><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">蜀ICP备19018857号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

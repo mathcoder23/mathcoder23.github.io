@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OpenCV4.12在Centos7和Ubuntu18下的安装 | mt23のBlog</title><meta name="keywords" content="opencv,开发"><meta name="author" content="mt23"><meta name="copyright" content="mt23"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="OpenCV源码下载Github地址，如果下载比较慢的话自己想想办法，额外安利一个加速吧：github加速之后的OpenCV将会在&#x2F;home&#x2F;api-service&#x2F;opencv下进行编译下载的openCV包在&#x2F;home&#x2F;api-service&#x2F;package&#x2F;opencv-4.1.2.tar.gz安装的基础环境很重要，否则会导致opencv在编译后某些功能不能正常使用 CentOS7下Open">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV4.12在Centos7和Ubuntu18下的安装">
+<meta property="og:url" content="https://blog.pettyfox.top/2021/07/26/723c6bc8871c.html">
+<meta property="og:site_name" content="mt23のBlog">
+<meta property="og:description" content="OpenCV源码下载Github地址，如果下载比较慢的话自己想想办法，额外安利一个加速吧：github加速之后的OpenCV将会在&#x2F;home&#x2F;api-service&#x2F;opencv下进行编译下载的openCV包在&#x2F;home&#x2F;api-service&#x2F;package&#x2F;opencv-4.1.2.tar.gz安装的基础环境很重要，否则会导致opencv在编译后某些功能不能正常使用 CentOS7下Open">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.pettyfox.top/images/img.jpg">
+<meta property="article:published_time" content="2021-07-26T10:26:20.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:50:23.375Z">
+<meta property="article:author" content="mt23">
+<meta property="article:tag" content="opencv">
+<meta property="article:tag" content="开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.pettyfox.top/images/img.jpg"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://blog.pettyfox.top/2021/07/26/723c6bc8871c"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OpenCV4.12在Centos7和Ubuntu18下的安装',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-27 09:50:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/head/mt-6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mt23のBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OpenCV4.12在Centos7和Ubuntu18下的安装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-26T10:26:20.000Z" title="发表于 2021-07-26 18:26:20">2021-07-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-27T01:50:23.375Z" title="更新于 2021-07-27 09:50:23">2021-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91/">开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OpenCV4.12在Centos7和Ubuntu18下的安装"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><span id="more"></span>
+<h1 id="OpenCV源码下载"><a href="#OpenCV源码下载" class="headerlink" title="OpenCV源码下载"></a>OpenCV源码下载</h1><p><a target="_blank" rel="noopener" href="https://github.com/opencv/opencv">Github地址</a>，如果下载比较慢的话自己想想办法，额外安利一个加速吧：<a target="_blank" rel="noopener" href="https://shrill-pond-3e81.hunsh.workers.dev/">github加速</a><br><code>之后的OpenCV将会在/home/api-service/opencv下进行编译</code><br><code>下载的openCV包在/home/api-service/package/opencv-4.1.2.tar.gz</code><br><code>安装的基础环境很重要，否则会导致opencv在编译后某些功能不能正常使用</code></p>
+<h1 id="CentOS7下OpenCV4-12安装"><a href="#CentOS7下OpenCV4-12安装" class="headerlink" title="CentOS7下OpenCV4.12安装"></a>CentOS7下OpenCV4.12安装</h1><h4 id="更新CentOS国内源"><a href="#更新CentOS国内源" class="headerlink" title="更新CentOS国内源"></a>更新CentOS国内源</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install -y wget</span><br><span class="line">wget -O CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+<h4 id="OpenCV基础环境"><a href="#OpenCV基础环境" class="headerlink" title="OpenCV基础环境"></a>OpenCV基础环境</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc gcc-c++</span><br><span class="line">yum install -y cmake3</span><br><span class="line">yum install -y gtk2-devel</span><br><span class="line">yum install -y ant</span><br><span class="line">yum install -y epel-release</span><br><span class="line">sudo rpm -import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm</span><br><span class="line">yum install -y ffmpeg ffmpeg-devel</span><br></pre></td></tr></table></figure>
+<h4 id="解压OpenCV"><a href="#解压OpenCV" class="headerlink" title="解压OpenCV"></a>解压OpenCV</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /home/api-service/opencv</span><br><span class="line">tar -zxvf /home/api-service/package/opencv-4.1.2.tar.gz -C /home/api-service/opencv</span><br></pre></td></tr></table></figure>
+<h4 id="编译OpenCV"><a href="#编译OpenCV" class="headerlink" title="编译OpenCV"></a>编译OpenCV</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cd /home/api-service/opencv</span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成临时的build目录</span></span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line"><span class="meta">#</span><span class="bash"> cmake3预编译</span></span><br><span class="line">cmake3 -D BUILD_SHARED_LIBS=ON -D BUILD_TESTS=OFF -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local/opencv/ ..</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译-会等比较久</span></span><br><span class="line">make -j12</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装到系统</span></span><br><span class="line">make install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 复制相关库到系统环境</span></span><br><span class="line">cd /usr/local/opencv</span><br><span class="line">cp -r include /usr/local/</span><br><span class="line">cp -r share /usr/local/</span><br><span class="line">cd /usr/local/opencv/lib64</span><br><span class="line">cp libopencv* /usr/local/lib64</span><br><span class="line">vim /etc/ld.so.conf # (增加: /usr/local/lib64    /usr/local/lib )    </span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<h1 id="Ubuntu18下OpenCV4-12安装"><a href="#Ubuntu18下OpenCV4-12安装" class="headerlink" title="Ubuntu18下OpenCV4.12安装"></a>Ubuntu18下OpenCV4.12安装</h1><h4 id="OpenCV基础环境-1"><a href="#OpenCV基础环境-1" class="headerlink" title="OpenCV基础环境"></a>OpenCV基础环境</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt install -y build-essential &amp;&amp; \</span><br><span class="line">apt install -y cmake git pkg-config libgtk2.0-dev &amp;&amp; \</span><br><span class="line">apt install -y python-dev python-numpy libtbb2 libtbb-dev &amp;&amp;  \</span><br><span class="line">apt install -y libjpeg-dev libpng-dev libtiff5-dev libdc1394-22-dev &amp;&amp; \</span><br><span class="line">apt install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev &amp;&amp; \</span><br><span class="line">apt install -y libxvidcore-dev libx264-dev &amp;&amp; \</span><br><span class="line">apt install -y libatlas-base-dev gfortran &amp;&amp; \</span><br><span class="line">apt install -y ant &amp;&amp; \</span><br><span class="line">apt install -y ffmpeg</span><br></pre></td></tr></table></figure>
+<h4 id="解压OpenCV-1"><a href="#解压OpenCV-1" class="headerlink" title="解压OpenCV"></a>解压OpenCV</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /home/api-service/opencv</span><br><span class="line">tar -zxvf /home/api-service/package/opencv-4.1.2.tar.gz -C /home/api-service/opencv</span><br></pre></td></tr></table></figure>
+<h4 id="编译OpenCV-1"><a href="#编译OpenCV-1" class="headerlink" title="编译OpenCV"></a>编译OpenCV</h4><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd /home/api-service/opencv</span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成临时的build目录</span></span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line"><span class="meta">#</span><span class="bash"> 这里BUILD_SHARED_LIBS=OFF才会编译出JAVA动态库，我也搞不懂为啥</span></span><br><span class="line">cmake -D BUILD_SHARED_LIBS=OFF -D BUILD_TESTS=OFF -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local/opencv/ ..</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译会比较久，耐心等待</span> </span><br><span class="line">make -j12 </span><br><span class="line">make install</span><br><span class="line">/bin/bash -c &#x27;echo &quot;/usr/local/lib&quot; &gt; /etc/ld.so.conf.d/opencv.conf&#x27;</span><br><span class="line">ldconfig</span><br></pre></td></tr></table></figure>
+
+<p><code>上面的流程一个基础的OpenCV还是比较容易安装出来的，主要的还是某些功能是否完整，一方面要确认系统的安装环境是否支持，我们需要看cmake构建的那个清单，看看是否支持到，否则就排查一下问题。</code></p>
+<h1 id="带JAVA库的编译"><a href="#带JAVA库的编译" class="headerlink" title="带JAVA库的编译"></a>带JAVA库的编译</h1><blockquote>
+<p>由于我这边是Java开发，因此需要编译出<code>libopencv_java412.so库</code>在CentOS7上正常，但是在Ubuntu上发现有问题，Java库始终编译不出来。可能的原因是一般Ubuntu的软件库版本会高些，因为装了ant后，似乎Java11也被装进去了。所以直接把java11的二进制文件删了，然后重新安装Jdk1.8，最后在配置JAVA_HOME以及PATH的java路径。JAVA_HOME必须配置为了opencv编译能够读取到它。然后cmake看看JAVA项的编译清单是否YES最后make以及install后。查看<code>/share/java/opencv4/java/libopencv_java412.so</code>是否存在</p>
+</blockquote>
+<p><code>坑多，祝各位好运~</code></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">mt23</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.pettyfox.top/2021/07/26/723c6bc8871c.html">https://blog.pettyfox.top/2021/07/26/723c6bc8871c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.pettyfox.top" target="_blank">mt23のBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/opencv/">opencv</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E5%8F%91/">开发</a></div><div class="post_share"><div class="social-share" data-image="/images/img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/26/0b8aaecdc202.html"><img class="prev-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">vue-quill-editor 图片实现自定义服务器上传的简单方法</div></div></a></div><div class="next-post pull-right"><a href="/2021/07/26/8e557a8948d6.html"><img class="next-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Could not find or load main class org.springframework.boot.loader.JarLauncher</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/07/27/f3c53b0e721a.html" title="Java OpenCV关于Mat的常用操作 修改尺寸 旋转 翻转 文字"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Java OpenCV关于Mat的常用操作 修改尺寸 旋转 翻转 文字</div></div></a></div><div><a href="/2021/07/26/71ba5484d974.html" title="TLS双向认证之生成双端证书信息"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-26</div><div class="title">TLS双向认证之生成双端证书信息</div></div></a></div><div><a href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">nginx多域名同ip负载均衡</div></div></a></div><div><a href="/2021/07/27/27da03cb8e65.html" title="/oauth/check_token 401"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">/oauth/check_token 401</div></div></a></div><div><a href="/2021/07/26/59f018fc4c01.html" title="前后端架构，前端H5或后台web动态切换(负载均衡)后端Api的baseUrl方案设计"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-26</div><div class="title">前后端架构，前端H5或后台web动态切换(负载均衡)后端Api的baseUrl方案设计</div></div></a></div><div><a href="/2021/07/27/f43e3b993949.html" title="基于docker rancher以及elk等常用服务搭建"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">基于docker rancher以及elk等常用服务搭建</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/head/mt-6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mt23</div><div class="author-info__description">云淡风轻，细腻而严谨</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mathcoder23"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenCV%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">OpenCV源码下载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CentOS7%E4%B8%8BOpenCV4-12%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">CentOS7下OpenCV4.12安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0CentOS%E5%9B%BD%E5%86%85%E6%BA%90"><span class="toc-number">2.0.0.1.</span> <span class="toc-text">更新CentOS国内源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenCV%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83"><span class="toc-number">2.0.0.2.</span> <span class="toc-text">OpenCV基础环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8BOpenCV"><span class="toc-number">2.0.0.3.</span> <span class="toc-text">解压OpenCV</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91OpenCV"><span class="toc-number">2.0.0.4.</span> <span class="toc-text">编译OpenCV</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu18%E4%B8%8BOpenCV4-12%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">Ubuntu18下OpenCV4.12安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenCV%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83-1"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">OpenCV基础环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8BOpenCV-1"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">解压OpenCV</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91OpenCV-1"><span class="toc-number">3.0.0.3.</span> <span class="toc-text">编译OpenCV</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%A6JAVA%E5%BA%93%E7%9A%84%E7%BC%96%E8%AF%91"><span class="toc-number">4.</span> <span class="toc-text">带JAVA库的编译</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By mt23</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><span class="footer-separator">|</span><span> </span><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">蜀ICP备19018857号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

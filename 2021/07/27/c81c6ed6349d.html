@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>生产环境docker部署之nginx部署 | mt23のBlog</title><meta name="keywords" content="docker,nginx"><meta name="author" content="mt23"><meta name="copyright" content="mt23"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="网上由很多关于docker某种容器的部署命令，比如nginx部署，jar包部署，监控部署等。但个人感觉很多不能达到企业生产化的效果，比如长期运行后的日志问题，容器的服务的配置等等。因此在这里记录一下。 nginx部署部署要点  nginx作为后端网关的入口，以及内部负载均衡的分发组件，在整个后端服务中是起非常重要的作用。说句题外话nginx对外的ip最好是弹性ip，这样可以在ddos情况下快速的更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生产环境docker部署之nginx部署">
+<meta property="og:url" content="https://blog.pettyfox.top/2021/07/27/c81c6ed6349d.html">
+<meta property="og:site_name" content="mt23のBlog">
+<meta property="og:description" content="网上由很多关于docker某种容器的部署命令，比如nginx部署，jar包部署，监控部署等。但个人感觉很多不能达到企业生产化的效果，比如长期运行后的日志问题，容器的服务的配置等等。因此在这里记录一下。 nginx部署部署要点  nginx作为后端网关的入口，以及内部负载均衡的分发组件，在整个后端服务中是起非常重要的作用。说句题外话nginx对外的ip最好是弹性ip，这样可以在ddos情况下快速的更">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.pettyfox.top/images/img.jpg">
+<meta property="article:published_time" content="2021-07-27T01:17:22.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:50:23.424Z">
+<meta property="article:author" content="mt23">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.pettyfox.top/images/img.jpg"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://blog.pettyfox.top/2021/07/27/c81c6ed6349d"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '生产环境docker部署之nginx部署',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-27 09:50:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/head/mt-6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mt23のBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tools/"><i class="fa-fw fa fa-gavel"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">生产环境docker部署之nginx部署</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-27T01:17:22.000Z" title="发表于 2021-07-27 09:17:22">2021-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-27T01:50:23.424Z" title="更新于 2021-07-27 09:50:23">2021-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91/">开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="生产环境docker部署之nginx部署"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>网上由很多关于docker某种容器的部署命令，比如nginx部署，jar包部署，监控部署等。但个人感觉很多不能达到企业生产化的效果，比如长期运行后的日志问题，容器的服务的配置等等。因此在这里记录一下。</p>
+<h1 id="nginx部署"><a href="#nginx部署" class="headerlink" title="nginx部署"></a>nginx部署</h1><h2 id="部署要点"><a href="#部署要点" class="headerlink" title="部署要点"></a>部署要点</h2><blockquote>
+<p> nginx作为后端网关的入口，以及内部负载均衡的分发组件，在整个后端服务中是起非常重要的作用。说句题外话nginx对外的ip最好是弹性ip，这样可以在ddos情况下快速的更换域名ip，最快的速度保证服务恢复。</p>
+</blockquote>
+<ul>
+<li>conf配置文件分离到宿主机中配置。这样可以方便的配置ssl，负载均衡策略。</li>
+<li>nginx的访问日志，这为产品上线后，对接口的pv，uv统计。可以转换到某日志分析平台。</li>
+<li>容器日志显示，容器中的日志记录是很可能将服务器磁盘跑满的。所以要做显示。才能保证长期的可靠运行</li>
+<li>服务抗重启。服务器发生宕机的情况是必不可免的。在应急的情况下可以重启服务。这自然就需要容器服务开机重启的自动启动<h2 id="开始部署"><a href="#开始部署" class="headerlink" title="开始部署"></a>开始部署</h2>我习惯将容器名称命名为<code> 3q-</code>前缀的方式名称这些开源组件 。含义是感谢这些开源组件给我带来的便利与价值。<h3 id="docker容器-nginx启动前准备"><a href="#docker容器-nginx启动前准备" class="headerlink" title="docker容器 nginx启动前准备"></a>docker容器 nginx启动前准备</h3>宿主机新建nginx所需的所有目录，下面都是目录<br>/home/nginx/conf.d<br>/home/nginx/certs<br>/home/nginx/logs<br>/home/nginx/html<h4 id="nginx配置文件-home-nginx-conf-d-default-conf"><a href="#nginx配置文件-home-nginx-conf-d-default-conf" class="headerlink" title="nginx配置文件,/home/nginx/conf.d/default.conf"></a>nginx配置文件,/home/nginx/conf.d/default.conf</h4><blockquote>
+<p>在nginx容器中 <code>/etc/nginx/nginx.conf </code>作为主配置文件，我们不去修改它，这个主配置文件会引用<code>/etc/nginx/conf.d</code>文件下的所有配置文件，所以我们将所有的服务器配置都在子配置文件中，这样由良好的拓展性，conf中的目录是相对nginx容器中的/etc/nginx目录为基础</p>
+</blockquote>
+</li>
+</ul>
+<p>下面这个配置文件是我常用的配置，作为nginx负载均衡。也包含ssl端口的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">upstream web_app &#123;</span><br><span class="line">       server 127.0.0.1:8080 weight=1 max_fails=2 fail_timeout=30s;</span><br><span class="line">       #server 127.0.0.1:8081 weight=1 max_fails=2 fail_timeout=30s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">       listen 80;</span><br><span class="line">       server_name domain.com;</span><br><span class="line">       index index.jsp index.html index.htm;</span><br><span class="line">       #发布目录/data/www</span><br><span class="line">       root /home/www;</span><br><span class="line"></span><br><span class="line">       listen 443 ssl;</span><br><span class="line">       #ssl on;</span><br><span class="line">       ssl_certificate certs/ssl-default.pem;</span><br><span class="line">       ssl_certificate_key certs/ssl-default.key;</span><br><span class="line">       ssl_session_timeout 5m;</span><br><span class="line"></span><br><span class="line">       location / &#123;</span><br><span class="line">               proxy_next_upstream http_502 http_504 error timeout invalid_header;</span><br><span class="line">               proxy_set_header Host  $host;</span><br><span class="line">               proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">               proxy_pass http://web_app;</span><br><span class="line">               proxy_redirect http:// $scheme://;</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="certs证书配置"><a href="#certs证书配置" class="headerlink" title="certs证书配置"></a>certs证书配置</h4><blockquote>
+<p>这只是模板，采用自建证书。测试浏览器https访问需要受信任,有正式证书直接替换文件即可</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /home/nginx/certs</span><br><span class="line">openssl genrsa -out ssl-default.key 2048</span><br><span class="line">openssl req -newkey rsa:2048 -nodes -keyout ssl-default.key -x509 -days 365 -out ssl-default.pem</span><br></pre></td></tr></table></figure>
+<h3 id="nginx启动"><a href="#nginx启动" class="headerlink" title="nginx启动"></a>nginx启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这里网络模式配置为主机模式,以便用127.0.0.1访问本机端口</span></span><br><span class="line">docker run \</span><br><span class="line">  --restart=always  \</span><br><span class="line">  --name 3q-nginx \</span><br><span class="line">  --network host \</span><br><span class="line">  -d -p 80:80 \</span><br><span class="line">  -p 443:443 \</span><br><span class="line">  -e &quot;TZ=Asia/Shanghai&quot; \</span><br><span class="line">  -v /home/nginx/conf.d:/etc/nginx/conf.d \</span><br><span class="line">  -v /home/nginx/certs:/etc/nginx/certs \</span><br><span class="line">  -v /home/nginx/logs:/var/log/nginx \</span><br><span class="line">  -v /home/nginx/html:/home/www \</span><br><span class="line"> nginx</span><br></pre></td></tr></table></figure>
+<p><code>我相信网上不会有这么到位参数配置. 这里提醒一下,在负载均衡时,内网服务获取客户端真实ip,需要使用httpX-Real-IP头.</code></p>
+<ul>
+<li>容器的运行网络模式在主机模式下,方便在ngixn配置文件中访问本机网络资源,分主机部署就不用为主机模式.</li>
+<li>容器运行时区调整为北京时间</li>
+<li>日志保存在宿主机,方便接入日志分析引擎</li>
+<li>支持https.理论上来讲,应该仅且支持https.不过建议还是开放80端口.在主机网络安全组中显示访问端口,这样可以灵活的控制是否开启http.https支持.</li>
+<li>开启自动启动<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 如果容器存在docker运行后自动启动配置</span><br><span class="line">docker update --restart=always 3q-nginx</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>作为生产端的nginx，不建议开放80端口应当只支持443端口强制加密访问，作为负载均衡端，在内网环境下，不建议使用443端口加密，这会增加服务间调用成本。</p>
+</blockquote>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">mt23</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.pettyfox.top/2021/07/27/c81c6ed6349d.html">https://blog.pettyfox.top/2021/07/27/c81c6ed6349d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.pettyfox.top" target="_blank">mt23のBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/docker/">docker</a><a class="post-meta__tags" href="/tags/nginx/">nginx</a></div><div class="post_share"><div class="social-share" data-image="/images/img.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/27/119554bde610.html"><img class="prev-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">mac外接显示器wifi无法正常使用的问题</div></div></a></div><div class="next-post pull-right"><a href="/2021/07/27/0f235d0c8a3d.html"><img class="next-cover" src="/images/img.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于netty-websocket的加密教程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/01/24/41b40859d20c.html" title="docker开机自动启动,容器自动启动"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-24</div><div class="title">docker开机自动启动,容器自动启动</div></div></a></div><div><a href="/2018/01/03/8655502e2de5.html" title="docker gitlab邮件服务器配置"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-03</div><div class="title">docker gitlab邮件服务器配置</div></div></a></div><div><a href="/2021/07/27/055bea5df2dd.html" title="Docker修改MySQL时区终极版"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Docker修改MySQL时区终极版</div></div></a></div><div><a href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">docker java8镜像 北京上海时间</div></div></a></div><div><a href="/2021/07/26/4aa3618140ba.html" title="docker ps 命令无响应整个服务崩溃"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-26</div><div class="title">docker ps 命令无响应整个服务崩溃</div></div></a></div><div><a href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署"><img class="cover" src="/images/img.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">xxl-job docker镜像部署</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/head/mt-6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mt23</div><div class="author-info__description">云淡风轻，细腻而严谨</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">52</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">25</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mathcoder23"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nginx%E9%83%A8%E7%BD%B2"><span class="toc-number">1.</span> <span class="toc-text">nginx部署</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E8%A6%81%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">部署要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.</span> <span class="toc-text">开始部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E5%AE%B9%E5%99%A8-nginx%E5%90%AF%E5%8A%A8%E5%89%8D%E5%87%86%E5%A4%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">docker容器 nginx启动前准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-home-nginx-conf-d-default-conf"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">nginx配置文件,&#x2F;home&#x2F;nginx&#x2F;conf.d&#x2F;default.conf</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#certs%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">certs证书配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E5%90%AF%E5%8A%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">nginx启动</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/de039b1a717a.html" title="js 判断非空对象的方法">js 判断非空对象的方法</a><time datetime="2021-07-27T01:32:46.000Z" title="发表于 2021-07-27 09:32:46">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/382b2269e9ad.html" title="maven 安装jar包到本地">maven 安装jar包到本地</a><time datetime="2021-07-27T01:32:30.000Z" title="发表于 2021-07-27 09:32:30">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/c77114fde70b.html" title="nginx多域名同ip负载均衡">nginx多域名同ip负载均衡</a><time datetime="2021-07-27T01:32:14.000Z" title="发表于 2021-07-27 09:32:14">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/0e9fe0d1eac7.html" title="xxl-job docker镜像部署">xxl-job docker镜像部署</a><time datetime="2021-07-27T01:31:58.000Z" title="发表于 2021-07-27 09:31:58">2021-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/27/86ecefa80505.html" title="docker java8镜像 北京上海时间">docker java8镜像 北京上海时间</a><time datetime="2021-07-27T01:31:42.000Z" title="发表于 2021-07-27 09:31:42">2021-07-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By mt23</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><span class="footer-separator">|</span><span> </span><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">蜀ICP备19018857号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
